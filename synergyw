@@ -41,7 +41,7 @@ client() {
 server() {
     get_program synergys
     synergy_config="$synergy_config_dir/$synergy_config"
-    test -f "$synergy_config" || die 4 "$USAGE\n$synergy_config is not a file"
+    test -f "$synergy_config" || die 4 "$0: in $config: $synergy_config is not a file"
     "$prog" -c "$synergy_config"
 }
 
