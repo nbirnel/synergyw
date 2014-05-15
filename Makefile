@@ -1,4 +1,4 @@
-PROG = __PROG__
+PROG = synergyw
 PREFIX = /usr/local
 
 install : $(PROG) $(PROG).1
