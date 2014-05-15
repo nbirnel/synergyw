@@ -1,0 +1,74 @@
+.# vim: ft=nroff
+.TH synergyw 1 synergyw\-0.0.1
+.SH NAME
+synergyw \- a simple wrapper around synergy,
+useful for multiple setups
+.SH SYNOPSIS
+.B synergyw CONFIG
+.SH DESCRIPTION
+.B synergyw
+runs 
+.B synergys
+or 
+.B synergyc
+with the options in \fBCONFIG\fR.
+.SH OPTIONS
+none 
+.SH EXIT STATUS
+exits non-zero on error.
+.SH AUTHOR
+Noah Birnel
+.SH HISTORY
+I use \fBsynergy\fR on a laptop
+at home as a server in two different configurations,
+and at work as a client.
+Keeping that all straight was not fun.
+.SH FILES
+.TP
+.B $HOME/.config/synergyw
+- config files.
+These are in 
+.B sh(1)
+and are simply value settings,
+in the format:
+.in +4
+.B KEY=VALUE
+.in -4
+You \fImust\fR set
+.B role
+to either 
+.B server
+or 
+.B client.
+Servers need
+.B synergy_config
+set to a valid synergy configuration file
+(located in \fB$HOME/.config/synergyw/synergy\fR).
+Clients need
+.B hostess
+set,
+and optionally 
+.B password.
+.TP
+.B $HOME/.config/synergyw/synergy
+- synergy config files, used by server config files.
+See
+.IR http://synergy2.sourceforge.net/configuration.html
+for the format.
+.SH BUGS
+Sources \fBCONFIG\fR, 
+which is a security hole.
+Probably other bugs.
+.B Synergy
+does not have a man page,
+which is not a bug in \fBsynergw\fR,
+but makes it harder to write configurations.
+.SH SEE ALSO
+.TP
+.IR http://synergy-project.org/
+.TP
+.IR http://synergy2.sourceforge.net/configuration.html
+.SH LICENSE
+Copyright 2014 Noah Birnel
+.sp
+MIT License

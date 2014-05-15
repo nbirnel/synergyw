@@ -1,0 +1,53 @@
+#!/bin/sh
+
+config_dir="$HOME/.config/synergyw"
+synergy_config_dir="$config_dir/synergy"
+
+USAGE="USAGE: $0 CONFIG"
+
+die() {
+    status=$1
+    shift
+    warn $@
+    exit $status
+}
+
+warn() {
+    echo $@ >&2
+}
+
+mk_private_dir() {
+    test -d "$1" || mkdir -p "$1" && chmod 700 "$1"
+}
+
+get_program() {
+    prog=$1
+    which_program="$(which $prog 2>/dev/null)"
+    win_program="$(ls /cygdrive/c/Program\ Files*/Synergy/$prog.exe 2>/dev/null)"
+    prog="${which_program:-"$win_program"}"
+}
+
+client() {
+    hash="$(printf '%s' "$password" | md5sum | sed 's/[^a-f0-9]*//g')"
+    get_program synergyc
+    "$prog" --debug DEBUG --crypto-pass $hash $hostess
+}
+
+server() {
+    get_program synergys
+    synergy_config="$synergy_config_dir/$synergy_config"
+    "$prog" -c "$synergy_config"
+}
+
+mk_private_dir "$config_dir"
+mk_private_dir "$synergy_config_dir"
+
+test $# -eq 1 || die 1 "$USAGE"
+config="$config_dir/$1"
+test -f "$config" || die 2 "$USAGE\n$config is not a file"
+. "$config"
+
+[ "$role" = "client" ] || [ "$role" = "server" ] ||\
+  die 3 "$0: in $config: role should be 'server' or 'client', not '$role'"
+
+$role
