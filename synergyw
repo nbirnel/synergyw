@@ -27,10 +27,15 @@ get_program() {
     prog="${which_program:-"$win_program"}"
 }
 
+hash_it() {
+    hashed="$(printf '%s' "$password" | md5sum | sed 's/[^a-f0-9]*//g')"
+    crypt="--crypto-pass $hashed"
+}
+
 client() {
-    hash="$(printf '%s' "$password" | md5sum | sed 's/[^a-f0-9]*//g')"
     get_program synergyc
-    "$prog" --debug DEBUG --crypto-pass $hash $hostess
+    test -n "$password" && hash_it
+    "$prog" --debug DEBUG $crypt $hostess
 }
 
 server() {
