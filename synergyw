@@ -112,6 +112,7 @@ done
 get_config "$1"
 action="${action:-"$role"}"
 
+#FIXME test for role only if needed?
 [ "$action" = "client" ] || [ "$action" = "server" ] || \
   [ "$action" = "show" ] || [ "$action" = "edit"   ] || \
   die 3 "$0: in $config: role should be 'server' or 'client', not '$role'"
