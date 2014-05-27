@@ -14,10 +14,10 @@ uninstall ::
 	rm -f ${DESTDIR}${PREFIX}/man/man1/$(PROG).1
 
 clean ::
-	rm -r $(PROG).ps
+	rm -rf $(PROG).ps
 
 clean-all ::
-	rm -r $(PROG).pdf
+	rm -rf $(PROG).pdf
 
 push :
 	git push origin master
