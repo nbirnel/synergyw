@@ -57,7 +57,23 @@ runs <b>synergys</b> or <b>synergyc</b> with the options in
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">none</p>
+<p style="margin-left:11%; margin-top: 1em"><b>-s
+CONFIG</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">show
+<b>CONFIG</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e
+CONFIG</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">edit
+<b>CONFIG</b>, and any synergy config file it depends
+on.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">list all
+<b>CONFIG</b> files.</p>
 
 <h2>EXIT STATUS
 <a name="EXIT STATUS"></a>
