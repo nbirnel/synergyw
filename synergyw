@@ -3,7 +3,7 @@
 config_dir="$HOME/.config/synergyw"
 synergy_config_dir="$config_dir/synergy"
 
-USAGE="USAGE: $0 CONFIG"
+USAGE="USAGE: $0 [-s] [-e] CONFIG"
 
 die() {
     status=$1
@@ -38,6 +38,13 @@ client() {
     "$prog" --debug DEBUG $crypt $hostess
 }
 
+get_config() {
+    test $# -eq 1 || die 1 "$USAGE"
+    config="$config_dir/$1"
+    test -f "$config" || die 2 "$USAGE\n$config is not a file"
+    . "$config"
+}
+
 server() {
     get_program synergys
     synergy_config="$synergy_config_dir/$synergy_config"
@@ -45,15 +52,53 @@ server() {
     "$prog" -c "$synergy_config"
 }
 
+list_files() {
+    echo "Files in $config_dir:"
+    find "$config_dir/" -maxdepth 1 -type f 
+    return $?
+}
+
+show() {
+    echo "showing $config:"
+    cat "$config"
+    synergy_config="$synergy_config_dir/$synergy_config"
+    test -f "$synergy_config" || return
+    echo "-----------"
+    echo "showing $synergy_config:"
+    cat "$synergy_config"
+}
+
 mk_private_dir "$config_dir"
 mk_private_dir "$synergy_config_dir"
 
-test $# -eq 1 || die 1 "$USAGE"
-config="$config_dir/$1"
-test -f "$config" || die 2 "$USAGE\n$config is not a file"
-. "$config"
+while [ $# -gt 0 ]; do
+    case "$1" in
+      -l)
+        list_files
+        exit $?
+        ;;
+      -s)
+        action="show"
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        die 1 "$USAGE: flag $1 not recognized"
+        break
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
 
-[ "$role" = "client" ] || [ "$role" = "server" ] ||\
+get_config "$1"
+action="${action:-"$role"}"
+
+[ "$action" = "client" ] || [ "$action" = "server" ] || [ "$action" = "show" ] || \
   die 3 "$0: in $config: role should be 'server' or 'client', not '$role'"
 
-$role
+$action
