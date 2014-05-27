@@ -58,6 +58,14 @@ list_files() {
     return $?
 }
 
+edit() {
+    edit="${VISUAL:-$EDITOR}"
+    edit="${edit:-vi}"
+    $edit "$config"
+    synergy_config="$synergy_config_dir/$synergy_config"
+    test -f "$synergy_config" && $edit "$synergy_config"
+}
+
 show() {
     echo "showing $config:"
     cat "$config"
@@ -76,6 +84,10 @@ while [ $# -gt 0 ]; do
       -l)
         list_files
         exit $?
+        ;;
+      -e)
+        action="edit"
+        shift
         ;;
       -s)
         action="show"
@@ -98,7 +110,8 @@ done
 get_config "$1"
 action="${action:-"$role"}"
 
-[ "$action" = "client" ] || [ "$action" = "server" ] || [ "$action" = "show" ] || \
+[ "$action" = "client" ] || [ "$action" = "server" ] || \
+  [ "$action" = "show" ] || [ "$action" = "edit"   ] || \
   die 3 "$0: in $config: role should be 'server' or 'client', not '$role'"
 
 $action
