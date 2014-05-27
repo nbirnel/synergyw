@@ -58,7 +58,7 @@ server() {
 
 edit() {
     edit="${VISUAL:-$EDITOR}"
-    edit="${edit:-vi}"
+    edit="${edit:-"$(which vi)"}"
     $edit "$config"
     get_synergy_config && $edit "$synergy_config"
 }
